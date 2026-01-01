@@ -5,7 +5,10 @@ import GUI from "lil-gui"
 console.log("Hello, Three.js with TypeScript!");
 
 // --- Canvas Setup ---
-const canvas = document.querySelector("canvas.webgl") as HTMLCanvasElement;
+const canvas = document.querySelector<HTMLCanvasElement>("canvas.webgl");
+if (!canvas){
+    throw new Error("Canvas element not found");
+}
 
 // --- Scene Setup ---
 const scene = new THREE.Scene();
