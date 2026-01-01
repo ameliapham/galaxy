@@ -14,12 +14,20 @@ const scene = new THREE.Scene();
 const axesHelper = new THREE.AxesHelper(2)
 scene.add(axesHelper)
 
+
+// --- Debug UI ---
+const gui = new GUI({
+    title: 'Galaxy Parameters'
+})
+gui.close()
+
 // --- Galaxy ---
 const parameters = {
     count: 1000,
     size : 0.01,
     color: 'pink'
 }
+
 function generateGalaxy() {
     // Geometry
     const geometry = new THREE.BufferGeometry()
@@ -28,9 +36,9 @@ function generateGalaxy() {
     for (let i=0; i < parameters.count; i++) {
         const i3 = i * 3
         
-        positions[i3 + 0] = Math.random()
-        positions[i3 + 1] = Math.random()
-        positions[i3 + 2] = Math.random()
+        positions[i3 + 0] = (Math.random() - 0.5) * 3
+        positions[i3 + 1] = (Math.random() - 0.5) * 3
+        positions[i3 + 2] = (Math.random() - 0.5) * 3
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions,3))
@@ -47,8 +55,11 @@ function generateGalaxy() {
     const points = new THREE.Points(geometry, material)
     scene.add(points)
 }
-
 generateGalaxy()
+
+gui.add(parameters, 'count').min(100).max(10000).step(100).onFinishChange(generateGalaxy)
+gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).onFinishChange(generateGalaxy)
+gui.addColor(parameters, 'color').onFinishChange(generateGalaxy)
 
 // --- Camera Setup ---
 const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight);
@@ -63,10 +74,6 @@ controls.enableDamping = true
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-// --- Debug UI ---
-const gui = new GUI
-gui.close()
 
 // --- Resize ---
 window.addEventListener("resize", () => {
