@@ -14,6 +14,42 @@ const scene = new THREE.Scene();
 const axesHelper = new THREE.AxesHelper(2)
 scene.add(axesHelper)
 
+// --- Galaxy ---
+const parameters = {
+    count: 1000,
+    size : 0.01,
+    color: 'pink'
+}
+function generateGalaxy() {
+    // Geometry
+    const geometry = new THREE.BufferGeometry()
+
+    const positions = new Float32Array(parameters.count * 3)
+    for (let i=0; i < parameters.count; i++) {
+        const i3 = i * 3
+        
+        positions[i3 + 0] = Math.random()
+        positions[i3 + 1] = Math.random()
+        positions[i3 + 2] = Math.random()
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions,3))
+
+    // Material
+    const material = new THREE.PointsMaterial({ 
+        size: parameters.size, 
+        color: parameters.color,
+        sizeAttenuation: true,
+        blending : THREE.AdditiveBlending,
+    })
+
+    // Points
+    const points = new THREE.Points(geometry, material)
+    scene.add(points)
+}
+
+generateGalaxy()
+
 // --- Camera Setup ---
 const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight);
 camera.position.z = 3
