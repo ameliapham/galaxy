@@ -31,6 +31,7 @@ const parameters = {
     color: 'pink',
     radius: 5,
     branches : 3,
+    spin: 1,
 }
 
 let geometry: THREE.BufferGeometry | null = null
@@ -53,11 +54,12 @@ function generateGalaxy() {
         const i3 = i * 3
 
         const radius = Math.random() * parameters.radius
+        const spinAngle = radius * parameters.spin
         const branchAngle = (i % parameters.branches) / parameters.branches * Math.PI * 2 // Angle for each branch
 
-        positions[i3 + 0] = Math.cos(branchAngle) * radius
+        positions[i3 + 0] = Math.cos(branchAngle + spinAngle) * radius
         positions[i3 + 1] = 0
-        positions[i3 + 2] = Math.sin(branchAngle) * radius
+        positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions,3))
@@ -81,6 +83,7 @@ gui.add(parameters, 'size').min(0.001).max(0.01).step(0.0001).onFinishChange(gen
 gui.addColor(parameters, 'color').onFinishChange(generateGalaxy)
 gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(generateGalaxy)
 gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(generateGalaxy)
+gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onFinishChange(generateGalaxy)
 
 // --- Camera Setup ---
 const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight);
