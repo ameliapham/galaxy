@@ -15,7 +15,7 @@ const scene = new THREE.Scene();
 
 // --- Setup Axes Helper ---
 const axesHelper = new THREE.AxesHelper(2)
-scene.add(axesHelper)
+// scene.add(axesHelper)
 
 
 // --- Debug UI ---
@@ -31,10 +31,10 @@ const parameters = {
     radius: 5,
     branches : 3,
     spin: 1,
-    randomness: 0.3,
+    randomness: 0.4,
     randomnessPower: 2,
-    insideColor: '#ff6030',
-    outsideColor: '#1b3984',
+    insideColor: '#ed5135',
+    outsideColor: '#3967db',
 }
 
 let geometry: THREE.BufferGeometry | null = null
@@ -112,7 +112,9 @@ gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
 
 // --- Camera Setup ---
 const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight);
-camera.position.z = 3
+camera.position.z = 4
+camera.position.y = 4
+camera.position.x = 0
 scene.add(camera)
 
 // --- Controls ---
