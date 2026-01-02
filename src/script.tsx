@@ -136,9 +136,17 @@ window.addEventListener("resize", () => {
 // --- Render Loop ---
 const clock = new THREE.Clock()
 
-function animate(){
+function animate(): void{
     // Clock
     const elapsedTime = clock.getElapsedTime()
+
+    // Update Galaxy
+    if (!points) return
+
+    const direction = parameters.spin >= 0 ? 1 : -1
+
+    points.rotation.y = direction * elapsedTime * 0.1
+    points.rotation.x = direction * elapsedTime * 0.01
 
     // Update control
     controls.update()
