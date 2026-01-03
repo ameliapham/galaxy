@@ -17,6 +17,37 @@ const scene = new THREE.Scene();
 const axesHelper = new THREE.AxesHelper(2)
 // scene.add(axesHelper)
 
+// --- Camera Setup ---
+const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight);
+camera.position.z = 4
+camera.position.y = 4
+camera.position.x = 0
+scene.add(camera)
+
+// --- Audio Setup ---
+const listener = new THREE.AudioListener()
+camera.add(listener)
+const sound = new THREE.Audio(listener)
+const audioLoader = new THREE.AudioLoader()
+
+audioLoader.load( 'https://8qlonopisvx260qb.public.blob.vercel-storage.com/across-the-quiet-galaxy.mp3', 
+    function(buffer) {
+	    sound.setBuffer(buffer);
+	    sound.setLoop(true);
+	    sound.setVolume(0.5);
+        document.addEventListener('click', () => {
+            if (!sound.isPlaying) {
+                sound.play();
+            }
+        });
+    },
+    undefined,
+    function(err) {
+        console.error('An error happened while loading audio.');
+    }
+);
+
+
 
 // --- Debug UI ---
 const gui = new GUI({
@@ -110,12 +141,9 @@ gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).onFinishChange
 gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
 gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
 
-// --- Camera Setup ---
-const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight);
-camera.position.z = 4
-camera.position.y = 4
-camera.position.x = 0
-scene.add(camera)
+const audioFolder = gui.addFolder('Audio Controls')
+
+// --- Camera Controls ---
 
 // --- Controls ---
 const controls = new OrbitControls(camera, canvas)
