@@ -156,8 +156,8 @@ gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(generateGa
 gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onFinishChange(generateGalaxy)
 gui.add(parameters, 'randomness').min(0).max(2).step(0.001).onFinishChange(generateGalaxy)
 gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).onFinishChange(generateGalaxy)
-gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
-gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
+gui.addColor(parameters, 'insideColor').onChange(generateGalaxy)
+gui.addColor(parameters, 'outsideColor').onChange(generateGalaxy)
 
 const audioFolder = gui.addFolder('Audio Controls')
 audioFolder.add(parametersAudio, 'volume').min(0).max(1).step(0.01).onFinishChange(() => {
