@@ -25,21 +25,35 @@ camera.position.x = 0
 scene.add(camera)
 
 // --- Audio Setup ---
+const parametersAudio = {
+    volume: 0.5,
+    loop: true,
+    enabled: true,
+    play: () => {
+        if (!sound.isPlaying) {
+            sound.play();
+            parametersAudio.enabled = true;
+        }
+    },
+    stop: () => {
+        if (sound.isPlaying) {
+            sound.stop();
+            parametersAudio.enabled = false;
+        }
+    }
+}
+
 const listener = new THREE.AudioListener()
 camera.add(listener)
+
 const sound = new THREE.Audio(listener)
 const audioLoader = new THREE.AudioLoader()
 
 audioLoader.load( 'https://8qlonopisvx260qb.public.blob.vercel-storage.com/across-the-quiet-galaxy.mp3', 
     function(buffer) {
 	    sound.setBuffer(buffer);
-	    sound.setLoop(true);
-	    sound.setVolume(0.5);
-        document.addEventListener('click', () => {
-            if (!sound.isPlaying) {
-                sound.play();
-            }
-        });
+	    sound.setLoop(parametersAudio.loop);
+	    sound.setVolume(parametersAudio.volume);
     },
     undefined,
     function(err) {
@@ -47,7 +61,11 @@ audioLoader.load( 'https://8qlonopisvx260qb.public.blob.vercel-storage.com/acros
     }
 );
 
-
+const playAudioOnce = () => {
+    parametersAudio.play()
+    document.removeEventListener('click', playAudioOnce)
+}
+document.addEventListener('click', playAudioOnce)
 
 // --- Debug UI ---
 const gui = new GUI({
@@ -142,6 +160,11 @@ gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy)
 gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy)
 
 const audioFolder = gui.addFolder('Audio Controls')
+audioFolder.add(parametersAudio, 'volume').min(0).max(1).step(0.01).onFinishChange(() => {
+    sound.setVolume(parametersAudio.volume);
+})
+audioFolder.add(parametersAudio, 'play').name('Play Audio')
+audioFolder.add(parametersAudio, 'stop').name('Stop Audio')
 
 // --- Camera Controls ---
 
