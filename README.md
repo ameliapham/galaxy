@@ -6,6 +6,11 @@ This repository contains a small Three.js learning project focused on building a
 
 <br/>
 
+## 🌐 Demo
+For a live experience, visit my [online demo](https://amelia-galaxy.vercel.app/).
+
+<br/>
+
 ## ⭐ What this project does
 
 - Creates a particle system using `THREE.BufferGeometry`
@@ -60,11 +65,6 @@ Install dependencies.
 
 Start the development server.
 `yarn dev`
-
-<br/>
-
-## 🌐 Demo
-For a live experience, visit my [online demo](https://amelia-galaxy.vercel.app/).
 
 <br/>
 
