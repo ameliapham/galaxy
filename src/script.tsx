@@ -76,7 +76,7 @@ gui.close()
 // --- Galaxy ---
 const parameters = {
     count: 50000,
-    size : 0.001,
+    size : 0.01,
     radius: 5,
     branches : 3,
     spin: 1,
@@ -150,7 +150,7 @@ function generateGalaxy() {
 generateGalaxy()
 
 gui.add(parameters, 'count').min(1000).max(100000).step(100).onFinishChange(generateGalaxy)
-gui.add(parameters, 'size').min(0.001).max(0.01).step(0.0001).onFinishChange(generateGalaxy)
+gui.add(parameters, 'size').min(0.005).max(0.02).step(0.0001).onFinishChange(generateGalaxy)
 gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(generateGalaxy)
 gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(generateGalaxy)
 gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onFinishChange(generateGalaxy)
