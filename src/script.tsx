@@ -1,6 +1,5 @@
 
 import * as THREE from "three";
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import GUI from "lil-gui"
 
 import { getCanvas } from './three/canvas'
@@ -9,6 +8,8 @@ import { createCamera } from './three/camera'
 import { createAudio } from './three/audio'
 import { createRenderer } from "./three/renderer"
 import { setupResize } from "./three/resize"
+import { createOrbitControls } from "./three/orbitControls"
+import { createAxesHelper } from "./three/objects/axesHelper";
 
 console.log("Hello, Three.js with TypeScript!");
 
@@ -19,7 +20,7 @@ const canvas = getCanvas()
 const scene = createScene();
 
 // --- Setup Axes Helper ---
-const axesHelper = new THREE.AxesHelper(2)
+const axesHelper = createAxesHelper({ size: 2 })
 // scene.add(axesHelper)
 
 // --- Camera Setup ---
@@ -170,8 +171,7 @@ audioFolder.add(audioActions, 'stop').name('Stop Audio')
 // --- Camera Controls ---
 
 // --- Controls ---
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
+const controls = createOrbitControls({ camera, canvas })
 
 // --- Renderer Setup ---
 const renderer = createRenderer(canvas);
