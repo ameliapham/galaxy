@@ -3,10 +3,12 @@ import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import GUI from "lil-gui"
 
-import {getCanvas} from './three/canvas'
-import {createScene} from './three/scene'
-import {createCamera} from './three/camera'
-import {createAudio} from './three/audio'
+import { getCanvas } from './three/canvas'
+import { createScene } from './three/scene'
+import { createCamera } from './three/camera'
+import { createAudio } from './three/audio'
+import { createRenderer } from "./three/renderer"
+import { setupResize } from "./three/resize"
 
 console.log("Hello, Three.js with TypeScript!");
 
@@ -172,16 +174,10 @@ const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
 // --- Renderer Setup ---
-const renderer = new THREE.WebGLRenderer({ canvas: canvas });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+const renderer = createRenderer(canvas);
 
 // --- Resize ---
-window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight
-    camera.updateProjectionMatrix()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-})
+setupResize({camera, renderer})
 
 // --- Render Loop ---
 const clock = new THREE.Clock()
