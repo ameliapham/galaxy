@@ -1,27 +1,27 @@
+
 import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import GUI from "lil-gui"
 
+import {getCanvas} from './three/canvas'
+import {createScene} from './three/scene'
+import {createCamera} from './three/camera'
+
 console.log("Hello, Three.js with TypeScript!");
 
 // --- Canvas Setup ---
-const canvas = document.querySelector<HTMLCanvasElement>("canvas.webgl");
-if (!canvas){
-    throw new Error("Canvas element not found");
-}
+const canvas = getCanvas()
 
 // --- Scene Setup ---
-const scene = new THREE.Scene();
+const scene = createScene();
 
 // --- Setup Axes Helper ---
 const axesHelper = new THREE.AxesHelper(2)
 // scene.add(axesHelper)
 
 // --- Camera Setup ---
-const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight);
-camera.position.z = 4
+const camera = createCamera();
 camera.position.y = 4
-camera.position.x = 0
 scene.add(camera)
 
 // --- Audio Setup ---
