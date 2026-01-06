@@ -6,6 +6,7 @@ import GUI from "lil-gui"
 import {getCanvas} from './three/canvas'
 import {createScene} from './three/scene'
 import {createCamera} from './three/camera'
+import {createAudio} from './three/audio'
 
 console.log("Hello, Three.js with TypeScript!");
 
@@ -25,47 +26,45 @@ camera.position.y = 4
 scene.add(camera)
 
 // --- Audio Setup ---
-const parametersAudio = {
+const audioParams = {
     volume: 0.5,
     loop: true,
     enabled: true,
-    play: () => {
-        if (!sound.isPlaying) {
-            sound.play();
-            parametersAudio.enabled = true;
-        }
-    },
-    stop: () => {
-        if (sound.isPlaying) {
-            sound.stop();
-            parametersAudio.enabled = false;
-        }
+}
+
+// Create audio object
+const {sound, listener} = createAudio({
+    url: 'https://8qlonopisvx260qb.public.blob.vercel-storage.com/across-the-quiet-galaxy.mp3',
+    volume: audioParams.volume,
+    loop: audioParams.loop,
+})
+camera.add(listener)
+
+// Control logic for audio playback
+const playAudio = () => {
+    if (!sound.isPlaying) {
+        sound.play();
+        audioParams.enabled = true;
+    }
+}
+const stopAudio = () => {
+    if (sound.isPlaying) {
+        sound.stop();
+        audioParams.enabled = false;
     }
 }
 
-const listener = new THREE.AudioListener()
-camera.add(listener)
-
-const sound = new THREE.Audio(listener)
-const audioLoader = new THREE.AudioLoader()
-
-audioLoader.load( 'https://8qlonopisvx260qb.public.blob.vercel-storage.com/across-the-quiet-galaxy.mp3', 
-    function(buffer) {
-	    sound.setBuffer(buffer);
-	    sound.setLoop(parametersAudio.loop);
-	    sound.setVolume(parametersAudio.volume);
-    },
-    undefined,
-    function(err) {
-        console.error('An error happened while loading audio.');
-    }
-);
-
 const playAudioOnce = () => {
-    parametersAudio.play()
+    playAudio();
     document.removeEventListener('click', playAudioOnce)
 }
 document.addEventListener('click', playAudioOnce)
+
+// For GUI controls
+const audioActions = {
+    play: playAudio,
+    stop: stopAudio,
+}
 
 // --- Debug UI ---
 const gui = new GUI({
@@ -160,11 +159,11 @@ gui.addColor(parameters, 'insideColor').onChange(generateGalaxy)
 gui.addColor(parameters, 'outsideColor').onChange(generateGalaxy)
 
 const audioFolder = gui.addFolder('Audio Controls')
-audioFolder.add(parametersAudio, 'volume').min(0).max(1).step(0.01).onFinishChange(() => {
-    sound.setVolume(parametersAudio.volume);
+audioFolder.add(audioParams, 'volume').min(0).max(1).step(0.01).onFinishChange(() => {
+    sound.setVolume(audioParams.volume);
 })
-audioFolder.add(parametersAudio, 'play').name('Play Audio')
-audioFolder.add(parametersAudio, 'stop').name('Stop Audio')
+audioFolder.add(audioActions, 'play').name('Play Audio')
+audioFolder.add(audioActions, 'stop').name('Stop Audio')
 
 // --- Camera Controls ---
 
