@@ -1,28 +1,31 @@
 import * as THREE from "three";
 
+export type GalaxyState = {
+    points: THREE.Points | null,
+    spin: number,
+}
+
 type Props = {
     scene: THREE.Scene,
     camera: THREE.PerspectiveCamera,
     renderer: THREE.WebGLRenderer,
     controls: any,
-    points?: THREE.Points,
-    spin?: number,
+    galaxyState: GalaxyState,
 }
 
 export function startAnimation(props: Props): void {
-    const { camera, scene, renderer, controls, points, spin } = props;
+    const { camera, scene, renderer, controls, galaxyState } = props;
     const clock = new THREE.Clock()
 
     function tick(): void {
         const elapsedTime = clock.getElapsedTime()
         
         // Update Galaxy
-        if (!points) return
- 
-        const direction = (spin ?? 1) >= 0 ? 1 : -1
-
-        points.rotation.y = direction * elapsedTime * 0.1
-        points.rotation.x = direction * elapsedTime * 0.01
+        if (galaxyState.points) {
+            const direction = galaxyState.spin >= 0 ? 1 : -1
+            galaxyState.points.rotation.y = direction * elapsedTime * 0.1
+            galaxyState.points.rotation.x = direction * elapsedTime * 0.001
+        }
 
         // Update control
         controls.update()

@@ -10,8 +10,8 @@ import { createRenderer } from "./three/renderer"
 import { setupResize } from "./three/resize"
 import { createOrbitControls } from "./three/orbitControls"
 import { createAxesHelper } from "./three/objects/axesHelper";
-import { createGalaxy, GalaxyParams } from "./three/objects/particles";
-import { startAnimation } from "./three/animate";
+import { createGalaxy, type GalaxyParams } from "./three/objects/particles";
+import { startAnimation, type GalaxyState } from "./three/animate";
 
 console.log("Hello, Three.js with TypeScript!");
 
@@ -91,33 +91,22 @@ const gui = new GUI({
 })
 gui.close()
 
-gui.add(parameters, 'count').min(1000).max(100000).step(100).onFinishChange(() => {
-    points = createGalaxy({parameters, scene})
+const regenerateGalaxy = () => {
+    galaxyState.points = createGalaxy({parameters, scene})
+}
+
+gui.add(parameters, 'count').min(1000).max(100000).step(100).onFinishChange(regenerateGalaxy)
+gui.add(parameters, 'size').min(0.005).max(0.02).step(0.0001).onFinishChange(regenerateGalaxy)
+gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(regenerateGalaxy)
+gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(regenerateGalaxy)
+gui.add(parameters, 'randomness').min(0).max(2).step(0.001).onFinishChange(regenerateGalaxy)
+gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).onFinishChange(regenerateGalaxy)
+gui.addColor(parameters, 'insideColor').onChange(regenerateGalaxy)
+gui.addColor(parameters, 'outsideColor').onChange(regenerateGalaxy)
+gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onChange(()=> {
+    galaxyState.spin = parameters.spin;
 })
-gui.add(parameters, 'size').min(0.005).max(0.02).step(0.0001).onFinishChange(() => {
-    points = createGalaxy({parameters, scene})
-})
-gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(() => {
-    points = createGalaxy({parameters, scene})
-})
-gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(() => {
-    points = createGalaxy({parameters, scene})
-})
-gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onFinishChange(() => {
-    points = createGalaxy({parameters, scene})
-})
-gui.add(parameters, 'randomness').min(0).max(2).step(0.001).onFinishChange(() => {
-    points = createGalaxy({parameters, scene})
-})
-gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).onFinishChange(() => {
-    points = createGalaxy({parameters, scene})
-})
-gui.addColor(parameters, 'insideColor').onChange(() => {
-    points = createGalaxy({parameters, scene})
-})
-gui.addColor(parameters, 'outsideColor').onChange(() => {
-    points = createGalaxy({parameters, scene})
-})
+
 
 const audioFolder = gui.addFolder('Audio Controls')
 audioFolder.add(audioParams, 'volume').min(0).max(1).step(0.01).onFinishChange(() => {
@@ -136,4 +125,8 @@ const renderer = createRenderer(canvas);
 setupResize({camera, renderer})
 
 // --- Render Loop ---
-startAnimation({ scene, camera, renderer, controls, points, spin: parameters.spin })
+const galaxyState: GalaxyState = {
+    points,
+    spin: parameters.spin,
+}
+startAnimation({ scene, camera, renderer, controls, galaxyState })
