@@ -4,14 +4,13 @@ import GUI from "lil-gui"
 
 import { getCanvas } from './three/canvas'
 import { createScene } from './three/scene'
-import { createCamera } from './three/camera'
+import { createCamera, createOrbitControls } from './three/camera'
 import { createAudio } from './three/audio'
 import { createRenderer } from "./three/renderer"
 import { setupResize } from "./three/resize"
-import { createOrbitControls } from "./three/orbitControls"
-import { createAxesHelper } from "./three/objects/axesHelper";
-import { createGalaxy, type GalaxyParams } from "./three/objects/particles";
-import { startAnimation, type GalaxyState } from "./three/animate";
+import { createAxesHelper } from "./three/models/axesHelper";
+import { createGalaxy, type GalaxyParams } from "./three/models/particles";
+import { startAnimation, type GalaxyState } from "./three/animation";
 
 console.log("Hello, Three.js with TypeScript!");
 
