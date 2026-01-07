@@ -84,6 +84,7 @@ const parameters: GalaxyParams = {
     outsideColor: '#3967db',
 }
 let points = createGalaxy({ parameters, scene })
+//points.rotation.z = Math.PI / 7
 
 // --- Debug UI ---
 const gui = new GUI({
@@ -101,11 +102,13 @@ gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(regene
 gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(regenerateGalaxy)
 gui.add(parameters, 'randomness').min(0).max(2).step(0.001).onFinishChange(regenerateGalaxy)
 gui.add(parameters, 'randomnessPower').min(1).max(10).step(0.001).onFinishChange(regenerateGalaxy)
+gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onChange(() => {
+    regenerateGalaxy()
+    galaxyState.direction = parameters.spin >= 0 ? 1 : -1
+})
 gui.addColor(parameters, 'insideColor').onChange(regenerateGalaxy)
 gui.addColor(parameters, 'outsideColor').onChange(regenerateGalaxy)
-gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onChange(()=> {
-    galaxyState.spin = parameters.spin;
-})
+
 
 
 const audioFolder = gui.addFolder('Audio Controls')
@@ -127,6 +130,6 @@ setupResize({camera, renderer})
 // --- Render Loop ---
 const galaxyState: GalaxyState = {
     points,
-    spin: parameters.spin,
+    direction: parameters.spin >= 0 ? 1 : -1
 }
 startAnimation({ scene, camera, renderer, controls, galaxyState })

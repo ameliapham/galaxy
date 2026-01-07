@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 export type GalaxyState = {
     points: THREE.Points | null,
-    spin: number,
+    direction: 1 | -1,
 }
 
 type Props = {
@@ -22,9 +22,8 @@ export function startAnimation(props: Props): void {
         
         // Update Galaxy
         if (galaxyState.points) {
-            const direction = galaxyState.spin >= 0 ? 1 : -1
-            galaxyState.points.rotation.y = direction * elapsedTime * 0.1
-            galaxyState.points.rotation.x = direction * elapsedTime * 0.001
+            galaxyState.points.rotation.y = galaxyState.direction * elapsedTime * 0.1
+            galaxyState.points.rotation.x = galaxyState.direction * elapsedTime * 0.001
         }
 
         // Update control
