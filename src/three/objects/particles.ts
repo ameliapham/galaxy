@@ -79,6 +79,7 @@ export function createGalaxy(props: Props): THREE.Points {
     
     // Points
     points = new THREE.Points(geometry, material)
+    points.rotation.z = Math.PI / 7
     scene.add(points)
 
     return points

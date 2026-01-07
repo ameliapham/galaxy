@@ -27,7 +27,7 @@ const axesHelper = createAxesHelper({ size: 2 })
 
 // --- Camera Setup ---
 const camera = createCamera();
-camera.position.y = 4
+camera.position.y = 1
 scene.add(camera)
 
 // --- Audio Setup ---
@@ -84,7 +84,6 @@ const parameters: GalaxyParams = {
     outsideColor: '#3967db',
 }
 let points = createGalaxy({ parameters, scene })
-//points.rotation.z = Math.PI / 7
 
 // --- Debug UI ---
 const gui = new GUI({
