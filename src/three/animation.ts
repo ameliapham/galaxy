@@ -22,8 +22,8 @@ export function startAnimation(props: Props): void {
         
         // Update Galaxy
         if (galaxyState.points) {
-            galaxyState.points.rotation.y = galaxyState.direction * elapsedTime * 0.1
-            galaxyState.points.rotation.x = galaxyState.direction * elapsedTime * 0.001
+            galaxyState.points.rotation.y = galaxyState.direction * elapsedTime * 0.08
+            galaxyState.points.rotation.x = galaxyState.direction * elapsedTime * - 0.04
         }
 
         // Update control
