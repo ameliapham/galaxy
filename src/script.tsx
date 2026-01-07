@@ -11,6 +11,7 @@ import { setupResize } from "./three/resize"
 import { createOrbitControls } from "./three/orbitControls"
 import { createAxesHelper } from "./three/objects/axesHelper";
 import { createGalaxy, GalaxyParams } from "./three/objects/particles";
+import { startAnimation } from "./three/animate";
 
 console.log("Hello, Three.js with TypeScript!");
 
@@ -70,12 +71,6 @@ const audioActions = {
     stop: stopAudio,
 }
 
-// --- Debug UI ---
-const gui = new GUI({
-    title: 'Galaxy Parameters'
-})
-gui.close()
-
 // --- Galaxy ---
 const parameters: GalaxyParams = {
     count: 50000,
@@ -89,6 +84,12 @@ const parameters: GalaxyParams = {
     outsideColor: '#3967db',
 }
 let points = createGalaxy({ parameters, scene })
+
+// --- Debug UI ---
+const gui = new GUI({
+    title: 'Galaxy Parameters'
+})
+gui.close()
 
 gui.add(parameters, 'count').min(1000).max(100000).step(100).onFinishChange(() => {
     points = createGalaxy({parameters, scene})
@@ -125,8 +126,6 @@ audioFolder.add(audioParams, 'volume').min(0).max(1).step(0.01).onFinishChange((
 audioFolder.add(audioActions, 'play').name('Play Audio')
 audioFolder.add(audioActions, 'stop').name('Stop Audio')
 
-// --- Camera Controls ---
-
 // --- Controls ---
 const controls = createOrbitControls({ camera, canvas })
 
@@ -137,27 +136,4 @@ const renderer = createRenderer(canvas);
 setupResize({camera, renderer})
 
 // --- Render Loop ---
-const clock = new THREE.Clock()
-
-function animate(): void{
-    // Clock
-    const elapsedTime = clock.getElapsedTime()
-
-    // Update Galaxy
-    if (!points) return
-
-    const direction = parameters.spin >= 0 ? 1 : -1
-
-    points.rotation.y = direction * elapsedTime * 0.1
-    points.rotation.x = direction * elapsedTime * 0.01
-
-    // Update control
-    controls.update()
-
-    // Update render
-    renderer.render(scene, camera);
-
-    // Call animate again on the next frame
-    window.requestAnimationFrame(animate)
-}
-animate()
+startAnimation({ scene, camera, renderer, controls, points, spin: parameters.spin })
