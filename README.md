@@ -1,4 +1,4 @@
-<img width="1787" height="921" alt="Screenshot 2026-01-03 at 03 09 10" src="https://github.com/user-attachments/assets/e2d5a211-487f-46af-9e7f-6a69483ca0a1" />
+<img width="1883" height="908" alt="Screenshot 2026-01-13 at 15 17 48" src="https://github.com/user-attachments/assets/a4d5b6c9-591f-4a7a-97b6-f400e58586cc" />
 
 #  Galaxy Generator
 
